@@ -523,7 +523,8 @@ def stage10_report():
     open(path,"w",encoding="utf-8").write(content)
     print(f"REPORT: {path}")
     cur.close(); conn.close(); spark.stop()
-
+    
+# ================= 11. VALIDATION =================
 def stage11_quality_gate():
     conn = get_conn(); cur = conn.cursor()
     try:
