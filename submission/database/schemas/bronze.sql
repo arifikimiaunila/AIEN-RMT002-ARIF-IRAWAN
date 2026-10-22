@@ -1,22 +1,17 @@
--- 1. Pastikan skema bronze ada
 CREATE SCHEMA IF NOT EXISTS bronze;
 
--- FIX UNTUK ERROR IMMUTABLE: Buat parser immutable
 CREATE OR REPLACE FUNCTION bronze.immutable_timestamptz(t TEXT)
-RETURNS TIMESTAMPTZ AS $$ SELECT t::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
+RETURNS TIMESTAMPTZ AS $$ SELECT NULLIF(t,'')::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION bronze.immutable_date(t TEXT)
-RETURNS DATE AS $$ SELECT t::DATE $$ LANGUAGE sql IMMUTABLE;
+RETURNS DATE AS $$ SELECT NULLIF(t,'')::DATE $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION bronze.immutable_numeric(t TEXT)
-RETURNS NUMERIC AS $$ SELECT t::NUMERIC $$ LANGUAGE sql IMMUTABLE;
+RETURNS NUMERIC AS $$ SELECT NULLIF(t,'')::NUMERIC $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION bronze.immutable_int(t TEXT)
-RETURNS INT AS $$ SELECT t::INT $$ LANGUAGE sql IMMUTABLE;
+RETURNS INT AS $$ SELECT NULLIF(t,'')::INT $$ LANGUAGE sql IMMUTABLE;
 
--- ==========================================
--- 2. Tabel Payment Events
--- ==========================================
 CREATE TABLE IF NOT EXISTS bronze.payment_events (
     id BIGSERIAL PRIMARY KEY,
     file_name VARCHAR(255) NOT NULL,
@@ -25,25 +20,19 @@ CREATE TABLE IF NOT EXISTS bronze.payment_events (
     checksum VARCHAR(64) NOT NULL,
     ingested_at TIMESTAMPTZ NOT NULL,
     payload JSONB NOT NULL,
-
     event_id TEXT GENERATED ALWAYS AS (payload->>'event_id') STORED,
     event_type TEXT GENERATED ALWAYS AS (payload->>'event_type') STORED,
     ingested_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'ingested_at_utc')) STORED,
     occurred_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'occurred_at_utc')) STORED,
-
     payment_id TEXT GENERATED ALWAYS AS (payload->>'payment_id') STORED,
     order_id TEXT GENERATED ALWAYS AS (payload->>'order_id') STORED,
     amount NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'amount')) STORED,
     payment_amount NUMERIC(14,2) GENERATED ALWAYS AS (COALESCE(bronze.immutable_numeric(payload->>'payment_amount'), bronze.immutable_numeric(payload->>'amount'))) STORED,
     payment_status TEXT GENERATED ALWAYS AS (payload->>'payment_status') STORED,
     payment_method TEXT GENERATED ALWAYS AS (payload->>'payment_method') STORED,
-
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
--- ==========================================
--- 3. Tabel Universal Ingested Data Events
--- ==========================================
 CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     id BIGSERIAL PRIMARY KEY,
     file_name VARCHAR(255) NOT NULL,
@@ -52,14 +41,10 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     checksum VARCHAR(64) NOT NULL,
     ingested_at TIMESTAMPTZ NOT NULL,
     payload JSONB NOT NULL,
-
-    -- EVENT CORE
     event_id TEXT GENERATED ALWAYS AS (payload->>'event_id') STORED,
     event_type TEXT GENERATED ALWAYS AS (payload->>'event_type') STORED,
     ingested_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'ingested_at_utc')) STORED,
     occurred_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'occurred_at_utc')) STORED,
-
-    -- AMOUNT & IDS
     amount NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'amount')) STORED,
     order_id TEXT GENERATED ALWAYS AS (payload->>'order_id') STORED,
     payment_id TEXT GENERATED ALWAYS AS (payload->>'payment_id') STORED,
@@ -71,8 +56,6 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     campaign_id TEXT GENERATED ALWAYS AS (payload->>'campaign_id') STORED,
     channel TEXT GENERATED ALWAYS AS (payload->>'channel') STORED,
     session_id TEXT GENERATED ALWAYS AS (payload->>'session_id') STORED,
-
-    -- MASTER
     address_id TEXT GENERATED ALWAYS AS (payload->>'address_id') STORED,
     city_id TEXT GENERATED ALWAYS AS (payload->>'city_id') STORED,
     source_row_id TEXT GENERATED ALWAYS AS (payload->>'source_row_id') STORED,
@@ -80,8 +63,6 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     valid_to_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'valid_to_utc')) STORED,
     customer_segment TEXT GENERATED ALWAYS AS (payload->>'customer_segment') STORED,
     created_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'created_at_utc')) STORED,
-
-    -- ORDER ITEMS
     item_discount_amount NUMERIC(14,2) GENERATED ALWAYS AS (COALESCE(bronze.immutable_numeric(payload->>'item_discount_amount'), bronze.immutable_numeric(payload->>'discount_amount'), 0)) STORED,
     order_item_id TEXT GENERATED ALWAYS AS (payload->>'order_item_id') STORED,
     product_id TEXT GENERATED ALWAYS AS (payload->>'product_id') STORED,
@@ -89,8 +70,6 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     unit_price NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'unit_price')) STORED,
     discount_amount NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'discount_amount')) STORED,
     promotion_id TEXT GENERATED ALWAYS AS (payload->>'promotion_id') STORED,
-
-    -- ORDERS
     ordered_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'ordered_at_utc')) STORED,
     sales_channel TEXT GENERATED ALWAYS AS (COALESCE(payload->>'sales_channel', payload->>'channel', payload->>'channel_id', 'online')) STORED,
     shipping_revenue NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'shipping_revenue')) STORED,
@@ -98,8 +77,6 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     status TEXT GENERATED ALWAYS AS (payload->>'status') STORED,
     store_id TEXT GENERATED ALWAYS AS (payload->>'store_id') STORED,
     updated_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'updated_at_utc')) STORED,
-
-    -- PRODUCT / PROMO
     category_id TEXT GENERATED ALWAYS AS (payload->>'category_id') STORED,
     category_name TEXT GENERATED ALWAYS AS (payload->>'category_name') STORED,
     product_name TEXT GENERATED ALWAYS AS (payload->>'product_name') STORED,
@@ -115,15 +92,12 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     store_name TEXT GENERATED ALWAYS AS (payload->>'store_name') STORED,
     city_name TEXT GENERATED ALWAYS AS (payload->>'city_name') STORED,
     country TEXT GENERATED ALWAYS AS (payload->>'country') STORED,
-
     order_status TEXT GENERATED ALWAYS AS (COALESCE(payload->>'order_status', payload->>'status')) STORED,
     return_status TEXT GENERATED ALWAYS AS (COALESCE(payload->>'return_status','NONE')) STORED,
     subtotal NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'subtotal')) STORED,
-
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
--- INDEX
 CREATE INDEX IF NOT EXISTS idx_ingested_file_name ON bronze.ingested_data_events(file_name);
 CREATE INDEX IF NOT EXISTS idx_ingested_source_id ON bronze.ingested_data_events(source_record_id);
 CREATE INDEX IF NOT EXISTS idx_ingested_event_type ON bronze.ingested_data_events(event_type);
@@ -132,7 +106,6 @@ CREATE INDEX IF NOT EXISTS idx_ingested_payload ON bronze.ingested_data_events U
 CREATE INDEX IF NOT EXISTS idx_payment_source_id ON bronze.payment_events(source_record_id);
 CREATE INDEX IF NOT EXISTS idx_payment_payload ON bronze.payment_events USING gin (payload);
 
--- TRIGGER IMMUTABLE
 CREATE OR REPLACE FUNCTION bronze.prevent_ingested_data_modification() RETURNS TRIGGER AS $$
 BEGIN
   IF (TG_OP='UPDATE') THEN RAISE EXCEPTION 'immutable'; 
@@ -145,7 +118,3 @@ CREATE TRIGGER enforce_immutable_ingested_data BEFORE UPDATE OR DELETE ON bronze
 
 DROP TRIGGER IF EXISTS enforce_immutable_payment ON bronze.payment_events;
 CREATE TRIGGER enforce_immutable_payment BEFORE UPDATE OR DELETE ON bronze.payment_events FOR EACH ROW EXECUTE FUNCTION bronze.prevent_ingested_data_modification();
-CREATE OR REPLACE FUNCTION bronze.immutable_timestamptz(t TEXT) RETURNS TIMESTAMPTZ AS $$ SELECT t::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
-CREATE OR REPLACE FUNCTION bronze.immutable_date(t TEXT) RETURNS DATE AS $$ SELECT t::DATE $$ LANGUAGE sql IMMUTABLE;
-CREATE OR REPLACE FUNCTION bronze.immutable_numeric(t TEXT) RETURNS NUMERIC AS $$ SELECT t::NUMERIC $$ LANGUAGE sql IMMUTABLE;
-CREATE OR REPLACE FUNCTION bronze.immutable_int(t TEXT) RETURNS INT AS $$ SELECT t::INT $$ LANGUAGE sql IMMUTABLE;
