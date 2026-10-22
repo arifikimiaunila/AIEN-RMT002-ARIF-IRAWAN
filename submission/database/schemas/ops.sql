@@ -17,18 +17,6 @@ CREATE TABLE IF NOT EXISTS ops.drive_files_raw (
     status VARCHAR(50) DEFAULT 'discovered'
 );
 
-CREATE TABLE IF NOT EXISTS ops.silver_to_gold_quarantine (
-    quarantine_id BIGSERIAL PRIMARY KEY,
-    target_table TEXT,
-    business_key TEXT,
-    order_id TEXT,
-    reason TEXT,
-    failed_field TEXT,
-    failed_value TEXT,
-    payload_json JSONB,
-    quarantined_at TIMESTAMPTZ DEFAULT NOW()
-);
-
 CREATE TABLE IF NOT EXISTS ops.data_quality_log (
     id SERIAL PRIMARY KEY,
     check_name VARCHAR(255),
