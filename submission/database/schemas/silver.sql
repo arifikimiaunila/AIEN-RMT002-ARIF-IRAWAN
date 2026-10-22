@@ -28,6 +28,18 @@ CREATE TABLE IF NOT EXISTS silver.customers (
     deterministic_key VARCHAR(512)
 );
 
+CREATE TABLE IF NOT EXISTS ops.silver_to_gold_quarantine (
+    quarantine_id BIGSERIAL PRIMARY KEY,
+    target_table TEXT,
+    business_key TEXT,
+    order_id TEXT,
+    reason TEXT,
+    failed_field TEXT,
+    failed_value TEXT,
+    payload_json JSONB,
+    quarantined_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 2. SILVER CUSTOMER_ADDRESSES
 CREATE TABLE IF NOT EXISTS silver.customer_addresses (
     address_id VARCHAR(100) PRIMARY KEY,
