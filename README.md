@@ -37,8 +37,8 @@ submission/
 - `airflow:2.9.3` - 8080 - volumes dags, database/schemas, pipelines, raw_data_validation
 
 ## Cara Menjalankan
-
-### 1. Start stack
+### 1. Unduh docker_compose.yaml.
+### 2. Start stack
 ```bash
 docker-compose up -d --build
 docker-compose ps2. Trigger DAGbash# UI: http://localhost:8080 admin/admin → Trigger omnichannel_retail_pipeline
