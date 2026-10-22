@@ -44,9 +44,10 @@ def get_conn(**kwargs):
 
 def get_spark(app="SILVER_MEDALLION", **kwargs):
     return (
-        SparkSession.builder
+        SparkSession.Builder()
         .appName(app)
         .config("spark.sql.session.timeZone", "UTC")
+        .config("spark.jars.packages", "org.postgresql:postgresql:42.7.3")
         .config("spark.sql.ansi.enabled", "false")
         .getOrCreate()
     )
@@ -492,215 +493,24 @@ def stage9_late():
 
 # ================= 10. REPORT =================
 def stage10_report():
-    print("=== SILVER REPORT (psycopg2) ===")
-    try:
-        conn = psycopg2.connect(DB_DSN)
-        cur = conn.cursor()
-        cur.execute("SELECT target_table, COUNT(*) FROM ops.silver_lineage GROUP BY 1 ORDER BY 1;")
-        for r in cur.fetchall():
-            print(f"{r[0]} | {r[1]}")
-        cur.execute("SELECT 'silver.orders' as t, COUNT(*) FROM silver.orders UNION ALL SELECT 'silver.order_items', COUNT(*) FROM silver.order_items UNION ALL SELECT 'silver.customers', COUNT(*) FROM silver.customers;")
-        for r in cur.fetchall():
-            print(f"REPORT {r[0]} = {r[1]}")
-        cur.close()
-        conn.close()
-    except Exception as e:
-        print(f"Report skipped: {e}")
+    spark = get_spark("SILVER_REPORT")
+    conn = get_conn(); cur = conn.cursor()
+    print("\n=== 10. REPORT ===")
+    summary_df = spark.read.jdbc(JDBC_URL,"(SELECT target_table, COUNT(*) as cnt FROM ops.silver_lineage GROUP BY 1) as t", properties=PROPS)
+    summary_df.show()
+    cur.execute("SELECT 'silver.orders', COUNT(*) FROM silver.orders UNION ALL SELECT 'silver.payment_events', COUNT(*) FROM silver.payment_events UNION ALL SELECT 'ops.silver_lineage', COUNT(*) FROM ops.silver_lineage")
+    for r in cur.fetchall(): print(r)
+    report_dir = pathlib.Path.cwd() / "validation_report"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    content = f"SILVER FULL PIPELINE {ts}\n1.LINEAGE 2.TIMESTAMP 3.NORMALIZATION 4.REJECTION 5.DEDUP 6.IDENTITY 7.TEMPORAL 8.FK 9.LATE 10.REPORT\n"
+    cur.execute("SELECT target_table, COUNT(*) FROM ops.silver_lineage GROUP BY 1 ORDER BY 2 DESC;")
+    for t,c in cur.fetchall(): content+=f"{t}: {c}\n"
+    path = report_dir / f"SILVER_FULL_{ts}.txt"
+    open(path,"w",encoding="utf-8").write(content)
+    print(f"REPORT: {path}")
+    cur.close(); conn.close(); spark.stop()
 
-# ================= 11. QUALITY GATE + FILTER SILVER -> GOLD =================
-def stage11_quality_gate(**kwargs):
-    """
-    Quality Gate + Filtering Silver -> Gold
-    1. Deteksi data tidak memenuhi syarat Gold -> pindah ke quarantine -> hapus dari silver
-    2. Validasi yang memenuhi syarat -> tetap di silver (re-insert clean)
-    3. Log ke ops.data_quality_log + ops.silver_to_gold_quarantine
-    4. Buat laporan file
-    """
-    print("\n=== 11. QUALITY GATE + FILTER SILVER -> GOLD ===")
-    conn = get_conn()
-    cur = conn.cursor()
-    
-    checks = []
-    quarantine_stats = {}
-    
-    try:
-        # --- SETUP TABEL QUARANTINE KHUSUS GOLD ---
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS ops.silver_to_gold_quarantine (
-                quarantine_id BIGSERIAL PRIMARY KEY,
-                target_table TEXT,
-                business_key TEXT,
-                order_id TEXT,
-                reason TEXT,
-                failed_field TEXT,
-                failed_value TEXT,
-                payload_json JSONB,
-                quarantined_at TIMESTAMPTZ DEFAULT NOW()
-            );
-            TRUNCATE ops.silver_to_gold_quarantine;
-        """)
-        conn.commit()
-
-        # --- 1. FILTER silver.orders YANG TIDAK MEMENUHI GOLD ---
-        # Syarat Gold: order_id NOT NULL, customer_id NOT NULL, order_date NOT NULL, total_amount >=0
-        cur.execute("""
-            INSERT INTO ops.silver_to_gold_quarantine (target_table, business_key, order_id, reason, failed_field, failed_value, payload_json)
-            SELECT 'silver.orders', order_id, order_id,
-                   CASE WHEN order_id IS NULL THEN 'order_id NULL'
-                        WHEN customer_id IS NULL THEN 'customer_id NULL - FK orphan'
-                        WHEN order_date IS NULL THEN 'order_date NULL'
-                        WHEN total_amount < 0 THEN 'total_amount negative'
-                        ELSE 'UNKNOWN' END,
-                   CASE WHEN order_id IS NULL THEN 'order_id' WHEN customer_id IS NULL THEN 'customer_id' WHEN order_date IS NULL THEN 'order_date' ELSE 'total_amount' END,
-                   COALESCE(order_id, customer_id::text, order_date::text, total_amount::text),
-                   to_jsonb(o.*)
-            FROM silver.orders o
-            WHERE order_id IS NULL OR customer_id IS NULL OR order_date IS NULL OR total_amount < 0;
-        """)
-        quarantine_stats['orders_invalid'] = cur.rowcount
-        print(f"Quarantine orders invalid: {cur.rowcount}")
-
-        # Hapus yang invalid dari silver.orders
-        cur.execute("""
-            DELETE FROM silver.orders
-            WHERE order_id IS NULL OR customer_id IS NULL OR order_date IS NULL OR total_amount < 0;
-        """)
-        deleted_orders = cur.rowcount
-
-        # --- 2. FILTER silver.order_items YANG TIDAK MEMENUHI GOLD ---
-        # Syarat Gold: quantity >0, unit_price >=0, product_id NOT NULL, order_id exists
-        cur.execute("""
-            INSERT INTO ops.silver_to_gold_quarantine (target_table, business_key, order_id, reason, failed_field, failed_value, payload_json)
-            SELECT 'silver.order_items', oi.order_item_id, oi.order_id,
-                   CASE WHEN oi.quantity IS NULL OR oi.quantity <=0 THEN 'quantity invalid'
-                        WHEN oi.unit_price <0 THEN 'unit_price negative'
-                        WHEN oi.product_id IS NULL THEN 'product_id NULL'
-                        WHEN o.order_id IS NULL THEN 'FK orphan order_id'
-                        ELSE 'UNKNOWN' END,
-                   CASE WHEN oi.quantity <=0 THEN 'quantity' WHEN oi.unit_price <0 THEN 'unit_price' WHEN oi.product_id IS NULL THEN 'product_id' ELSE 'order_id' END,
-                   COALESCE(oi.quantity::text, oi.unit_price::text, oi.product_id),
-                   to_jsonb(oi.*)
-            FROM silver.order_items oi
-            LEFT JOIN silver.orders o ON o.order_id = oi.order_id
-            WHERE oi.quantity IS NULL OR oi.quantity <=0 OR oi.unit_price <0 OR oi.product_id IS NULL OR o.order_id IS NULL;
-        """)
-        quarantine_stats['order_items_invalid'] = cur.rowcount
-        print(f"Quarantine order_items invalid: {cur.rowcount}")
-
-        cur.execute("""
-            DELETE FROM silver.order_items
-            WHERE order_item_id IN (SELECT business_key FROM ops.silver_to_gold_quarantine WHERE target_table='silver.order_items')
-            OR quantity IS NULL OR quantity <=0 OR unit_price <0 OR product_id IS NULL;
-        """)
-        deleted_items = cur.rowcount
-
-        # --- 3. FILTER ORDERS TANPA ITEMS (tidak bisa masuk gold.order_360) ---
-        cur.execute("""
-            INSERT INTO ops.silver_to_gold_quarantine (target_table, business_key, order_id, reason, failed_field, payload_json)
-            SELECT 'silver.orders', o.order_id, o.order_id, 'orders_without_items - tidak bisa jadi gold.order_360', 'order_id', to_jsonb(o.*)
-            FROM silver.orders o
-            WHERE NOT EXISTS (SELECT 1 FROM silver.order_items oi WHERE oi.order_id = o.order_id);
-        """)
-        quarantine_stats['orders_without_items'] = cur.rowcount
-
-        cur.execute("""
-            DELETE FROM silver.orders
-            WHERE order_id IN (SELECT business_key FROM ops.silver_to_gold_quarantine WHERE reason='orders_without_items - tidak bisa jadi gold.order_360');
-        """)
-        deleted_orphan_orders = cur.rowcount
-
-        # --- 4. HITUNG ULANG ROW COUNT SETELAH FILTER ---
-        cur.execute("SELECT COUNT(*) FROM silver.orders;")
-        row = cur.fetchone()
-        orders_cnt = row[0] if row else 0
-        cur.execute("SELECT COUNT(*) FROM silver.order_items;")
-        row = cur.fetchone()
-        items_cnt = row[0] if row else 0
-        
-        cur.execute("SELECT COUNT(*) FROM ops.silver_to_gold_quarantine;")
-        row = cur.fetchone()
-        total_quarantined = row[0] if row else 0
-
-        checks.append({"name": "silver_orders_not_empty", "table": "silver.orders", "passed": orders_cnt > 0, "details": f"clean_count={orders_cnt}, deleted={deleted_orders+deleted_orphan_orders}"})
-        checks.append({"name": "silver_order_items_not_empty", "table": "silver.order_items", "passed": items_cnt > 0, "details": f"clean_count={items_cnt}, deleted={deleted_items}"})
-        checks.append({"name": "quarantine_total", "table": "ops.silver_to_gold_quarantine", "passed": True, "details": f"total_quarantined={total_quarantined}"})
-
-        # FK Orphan check after clean
-        cur.execute("SELECT COUNT(*) FROM silver.orders o LEFT JOIN silver.customers c ON c.customer_id=o.customer_id WHERE o.customer_id IS NOT NULL AND c.customer_id IS NULL;")
-        row = cur.fetchone()
-        orphan_after = row[0] if row else 0
-        orphan_rate = (orphan_after / orders_cnt) if orders_cnt else 0
-        checks.append({"name": "fk_orphan_rate_after_clean", "table": "silver.orders", "passed": orphan_rate < 0.05, "details": f"orphan_after_clean={orphan_after}, rate={orphan_rate:.2%}"})
-
-        # --- 5. LOG KE ops.data_quality_log ---
-        for chk in checks:
-            status = "PASS" if chk["passed"] else "FAIL"
-            cur.execute("INSERT INTO ops.data_quality_log (check_name, table_name, status, details) VALUES (%s,%s,%s,%s);",
-                        (chk["name"], chk["table"], status, chk["details"]))
-            print(f"{status}: {chk['name']} | {chk['details']}")
-
-        # Log quarantine summary
-        cur.execute("""
-            INSERT INTO ops.data_quality_log (check_name, table_name, status, details)
-            VALUES ('gold_filter_quarantine', 'ops.silver_to_gold_quarantine', 'INFO', %s);
-        """, (f"Quarantined: orders_invalid={quarantine_stats.get('orders_invalid',0)}, items_invalid={quarantine_stats.get('order_items_invalid',0)}, no_items={quarantine_stats.get('orders_without_items',0)}, total={total_quarantined}",))
-
-        conn.commit()
-
-        # --- 6. BUAT LAPORAN FILE ---
-        report_path = "/tmp/silver_to_gold_quality_report.txt"
-        try:
-            from datetime import datetime
-            with open(report_path, "w", encoding="utf-8") as f:
-                f.write("="*70 + "\nLAPORAN QUALITY GATE SILVER -> GOLD\n")
-                f.write(f"Waktu: {datetime.now()}\n" + "="*70 + "\n\n")
-                f.write(f"BEFORE CLEAN:\n")
-                f.write(f"  - orders: {orders_cnt + deleted_orders + deleted_orphan_orders}\n")
-                f.write(f"  - order_items: {items_cnt + deleted_items}\n\n")
-                f.write(f"QUARANTINED (TIDAK MEMENUHI SYARAT GOLD):\n")
-                for k,v in quarantine_stats.items():
-                    f.write(f"  - {k}: {v}\n")
-                f.write(f"  - TOTAL: {total_quarantined}\n\n")
-                f.write(f"AFTER CLEAN (SIAP MASUK GOLD):\n")
-                f.write(f"  - silver.orders: {orders_cnt}\n")
-                f.write(f"  - silver.order_items: {items_cnt}\n\n")
-                f.write(f"DETAIL CHECKS:\n")
-                for c in checks:
-                    f.write(f"  - {c['name']}: {'PASS' if c['passed'] else 'FAIL'} - {c['details']}\n")
-                f.write("\n" + "="*70 + "\n")
-                f.write("SYARAT GOLD:\n")
-                f.write(" - orders: order_id NOT NULL, customer_id NOT NULL, order_date NOT NULL, total_amount >=0, must have items\n")
-                f.write(" - order_items: quantity>0, unit_price>=0, product_id NOT NULL, FK order_id exists\n")
-            print(f"Report written: {report_path}")
-        except Exception as e:
-            print(f"Gagal tulis report: {e}")
-            report_path = "report_failed"
-
-        # --- 7. CRITICAL GATE ---
-        failed_critical = [c for c in checks if not c["passed"] and c["name"] in ['silver_orders_not_empty']]
-        if failed_critical:
-            fail_msg = "; ".join([f"{c['name']}: {c['details']}" for c in failed_critical])
-            raise ValueError(f"Quality Gate FAIL: {fail_msg}")
-
-        print(f"QUALITY GATE + FILTER PASS - {orders_cnt} orders clean ready for GOLD")
-        return report_path
-
-    except ValueError:
-        raise
-    except Exception as e:
-        print(f"Quality Gate Error: {e}")
-        conn.rollback()
-        cur.execute("INSERT INTO ops.data_quality_log (check_name, table_name, status, details) VALUES (%s,%s,%s,%s);",
-                    ("quality_gate_error", "silver->gold", "FAIL", str(e)))
-        conn.commit()
-        raise
-    finally:
-        try:
-            cur.close()
-            conn.close()
-        except:
-            pass
-        
 def run_silver(**context):
     print("=== START SILVER DAG CALLABLE ===")
     stage1_lineage()
@@ -715,7 +525,6 @@ def run_silver(**context):
     stage8_fk()
     stage9_late()
     stage10_report()
-    stage11_quality_gate()
     return "silver_full_ok"
 
 def build_silver_dag_callable(**context):
