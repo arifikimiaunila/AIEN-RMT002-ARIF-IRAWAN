@@ -184,6 +184,46 @@ def run_bronze():
         total+=ingest(path, table, fmt, ids)
     
     conn3=get_conn(); cur3=conn3.cursor()
+    print(">> Populate bronze.orders from ops.silver_lineage...")
+    cur3.execute("""
+        INSERT INTO bronze.orders (order_id, customer_id, store_id, channel_id, sales_channel, order_status, status, ordered_at_utc, order_date_utc, total_amount, shipping_cost, source_file)
+        SELECT DISTINCT ON (l.order_id)
+          l.order_id,
+          l.customer_id,
+          COALESCE(l.store_id,'STORE_001'),
+          COALESCE(l.channel_id,'CH_001'),
+          COALESCE(l.sales_channel,'online'),
+          COALESCE(l.status,'completed'),
+          COALESCE(l.status,'completed'),
+          COALESCE(l.ordered_at_utc, NOW()),
+          COALESCE(l.ordered_at_utc::date, CURRENT_DATE),
+          COALESCE(l.amount,0),
+          COALESCE(l.shipping_cost,0),
+          l.bronze_file_name
+        FROM ops.silver_lineage l
+        WHERE l.target_table='silver.orders' AND l.order_id IS NOT NULL
+        ORDER BY l.order_id, l.bronze_ingested_at DESC
+        ON CONFLICT (order_id) DO UPDATE SET
+          customer_id=EXCLUDED.customer_id,
+          total_amount=EXCLUDED.total_amount;
+    """)
+    conn3.commit()
+    cur3.execute("SELECT COUNT(*) FROM bronze.orders;")
+    print(f"bronze.orders count: {cur3.fetchone()[0]}")
+    cur3.execute("SELECT COUNT(*) FROM silver.orders;")
+    print(f"silver.orders count: {cur3.fetchone()[0]}")
+    # ====== AKHIR INSERT BARU ======
+
+    cur3.execute("SELECT file_name, COUNT(*) FROM bronze.ingested_data_events GROUP BY 1 ORDER BY 2 DESC;")
+    print("\n=== FINAL BREAKDOWN ===")
+    for fn,cnt in cur3.fetchall(): print(f"{cnt:>6} | {fn}")
+    cur3.execute("SELECT COUNT(*) FROM bronze.payment_events;")
+    row = cur3.fetchone()
+    print(f"payment_events: {row[0] if row is not None else 0}")
+    cur3.close(); conn3.close()
+    print(f"\nDONE Bronze {total} rows")
+    return total
+    
     cur3.execute("SELECT file_name, COUNT(*) FROM bronze.ingested_data_events GROUP BY 1 ORDER BY 2 DESC;")
     print("\n=== FINAL BREAKDOWN ===")
     for fn,cnt in cur3.fetchall(): print(f"{cnt:>6} | {fn}")
