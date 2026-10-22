@@ -386,3 +386,22 @@ ALTER TABLE silver.web_events ADD COLUMN IF NOT EXISTS is_current BOOLEAN DEFAUL
 ALTER TABLE silver.web_events ADD COLUMN IF NOT EXISTS silver_processed_at TIMESTAMPTZ DEFAULT NOW();
 ALTER TABLE silver.web_events ADD COLUMN IF NOT EXISTS event_timestamp_utc TIMESTAMPTZ;
 ALTER TABLE silver.orders ADD COLUMN IF NOT EXISTS order_date DATE;
+
+-- ======================================================
+-- 20. FIX ON CONFLICT - UNIQUE INDEX UNTUK BUILD_SILVER.PY
+-- ======================================================
+-- Ini bikin ON CONFLICT gak error lagi walaupun PK di-drop manual
+CREATE UNIQUE INDEX IF NOT EXISTS uq_order_items_order_item_id ON silver.order_items (order_item_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_payment_events_payment_id ON silver.payment_events (payment_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_payment_events_event_id ON silver.payment_events (event_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_customers_customer_id ON silver.customers (customer_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_orders_order_id ON silver.orders (order_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_products_product_id ON silver.products (product_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_stores_store_id ON silver.stores (store_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_web_events_event_id ON silver.web_events (event_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_inventory_id_date ON silver.inventory_snapshots (inventory_id, snapshot_date_utc);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_campaign_spend_pk ON silver.campaign_spend (campaign_id, spend_date_utc);
+
+-- Fix quantity check biar gak block insert 0
+ALTER TABLE silver.order_items DROP CONSTRAINT IF EXISTS order_items_quantity_check;
+ALTER TABLE silver.order_items DROP CONSTRAINT IF EXISTS silver_order_items_quantity_check;
