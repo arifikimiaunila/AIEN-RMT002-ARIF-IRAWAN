@@ -261,13 +261,14 @@ def stage2_timestamp():
     print("\n=== 2. TIMESTAMP ===")
     conn = get_conn(); cur = conn.cursor()
     cur.execute("""
-    DO $$ BEGIN
-        IF EXISTS (SELECT 1 FROM information_schema.table_constraints 
-                   WHERE table_name='payment_events' AND table_schema='silver' 
-                   AND constraint_type='PRIMARY KEY') THEN
-            EXECUTE 'ALTER TABLE silver.payment_events DROP CONSTRAINT payment_events_pkey CASCADE';
-        END IF;
-    EXCEPTION WHEN OTHERS THEN NULL; END $$;
+    BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.table_constraints 
+               WHERE table_name=''payment_events'' AND table_schema=''silver'' 
+               AND constraint_type=''PRIMARY KEY'') THEN
+        EXECUTE ''ALTER TABLE silver.payment_events DROP CONSTRAINT payment_events_pkey CASCADE'';
+    END IF;
+    EXCEPTION WHEN OTHERS THEN NULL;
+    END;
     """)
     cur.execute("""
     ALTER TABLE silver.payment_events DROP CONSTRAINT IF EXISTS payment_events_payment_id_key CASCADE;
@@ -359,14 +360,21 @@ def stage3_normalization():
     ('paid','paid'),('PAID','paid'),('completed','completed'),('cancelled','cancelled'),('refunded','refunded'),('pending','pending'),('failed','failed'),
     ('PAYMENT_CAPTURED','paid'),('PAYMENT_AUTHORIZED','paid'),('PAYMENT_FAILED','failed'),('PAYMENT_REFUNDED','refunded'),('PAYMENT_CANCELLED','cancelled')
     ON CONFLICT (raw_status) DO UPDATE SET normalized_status = EXCLUDED.normalized_status;
-    CREATE OR REPLACE FUNCTION ops.normalize_status(raw TEXT) RETURNS TEXT AS $$
-    DECLARE v TEXT; norm TEXT; BEGIN IF raw IS NULL OR TRIM(raw)='' THEN RETURN 'unknown'; END IF; v:=LOWER(TRIM(raw));
-      SELECT normalized_status INTO norm FROM ops.silver_status_map WHERE LOWER(TRIM(raw_status))=v LIMIT 1; IF norm IS NOT NULL THEN RETURN norm; END IF;
-      RETURN CASE WHEN v LIKE '%captured%' THEN 'paid' WHEN v LIKE '%failed%' THEN 'failed' WHEN v LIKE 'comp%' THEN 'completed' WHEN v LIKE 'canc%' THEN 'cancelled' WHEN v LIKE 'refu%' THEN 'refunded' ELSE 'unknown' END;
-    END; $$ LANGUAGE plpgsql IMMUTABLE;
-    UPDATE ops.silver_lineage SET status = COALESCE(NULLIF(TRIM(status),''), payload_json->>'payment_status', payload_json->>'event_type') WHERE target_table='silver.payment_events' AND (status IS NULL OR status='');
-    UPDATE silver.payment_events pe SET payment_status = ops.normalize_status(l.status) FROM ops.silver_lineage l WHERE l.target_table='silver.payment_events' AND l.business_key = pe.payment_id;
-    UPDATE silver.payment_events SET payment_status = ops.normalize_status(payment_status) WHERE payment_status NOT IN ('paid','failed','completed','cancelled','refunded','pending','returned','shipped','processing','unknown');
+    
+    CREATE OR REPLACE FUNCTION ops.normalize_status(raw TEXT) RETURNS TEXT LANGUAGE plpgsql IMMUTABLE AS '
+    DECLARE v TEXT; norm TEXT; 
+    BEGIN 
+      IF raw IS NULL OR TRIM(raw)='''' THEN RETURN ''unknown''; END IF; 
+      v:=LOWER(TRIM(raw));
+      SELECT normalized_status INTO norm FROM ops.silver_status_map WHERE LOWER(TRIM(raw_status))=v LIMIT 1; 
+      IF norm IS NOT NULL THEN RETURN norm; END IF;
+      RETURN CASE WHEN v LIKE ''%captured%'' THEN ''paid'' WHEN v LIKE ''%failed%'' THEN ''failed'' WHEN v LIKE ''comp%'' THEN ''completed'' WHEN v LIKE ''canc%'' THEN ''cancelled'' WHEN v LIKE ''refu%'' THEN ''refunded'' ELSE ''unknown'' END;
+    END;
+    ';
+    
+    UPDATE ops.silver_lineage SET status = COALESCE(NULLIF(TRIM(status),''''), payload_json->>''payment_status'', payload_json->>''event_type'') WHERE target_table=''silver.payment_events'' AND (status IS NULL OR status='''');
+    UPDATE silver.payment_events pe SET payment_status = ops.normalize_status(l.status) FROM ops.silver_lineage l WHERE l.target_table=''silver.payment_events'' AND l.business_key = pe.payment_id;
+    UPDATE silver.payment_events SET payment_status = ops.normalize_status(payment_status) WHERE payment_status NOT IN (''paid'',''failed'',''completed'',''cancelled'',''refunded'',''pending'',''returned'',''shipped'',''processing'',''unknown'');
     """)
     print("NORMALIZATION OK")
     cur.close(); conn.close()
@@ -523,7 +531,7 @@ def stage10_report():
     open(path,"w",encoding="utf-8").write(content)
     print(f"REPORT: {path}")
     cur.close(); conn.close(); spark.stop()
-    
+
 # ================= 11. VALIDATION =================
 def stage11_quality_gate():
     conn = get_conn(); cur = conn.cursor()
