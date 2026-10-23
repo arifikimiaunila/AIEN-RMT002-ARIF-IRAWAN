@@ -55,43 +55,43 @@ def get_conn():
     return conn
 
 # --- INIT BRONZE SCHEMA + FUNCTIONS ---
-conn = get_conn()
-cur = conn.cursor()
-cur.execute("CREATE SCHEMA IF NOT EXISTS bronze;")
-cur.execute("""
-CREATE OR REPLACE FUNCTION bronze.immutable_timestamptz(t TEXT) RETURNS TIMESTAMPTZ AS $$ SELECT t::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
-CREATE OR REPLACE FUNCTION bronze.immutable_date(t TEXT) RETURNS DATE AS $$ SELECT t::DATE $$ LANGUAGE sql IMMUTABLE;
-CREATE OR REPLACE FUNCTION bronze.immutable_numeric(t TEXT) RETURNS NUMERIC AS $$ SELECT t::NUMERIC $$ LANGUAGE sql IMMUTABLE;
-CREATE OR REPLACE FUNCTION bronze.immutable_int(t TEXT) RETURNS INT AS $$ SELECT t::INT $$ LANGUAGE sql IMMUTABLE;
-""")
-conn.commit()
+c   onn = get_conn()
+    cur = conn.cursor()
+    cur.execute("CREATE SCHEMA IF NOT EXISTS bronze;")
+    cur.execute("""
+    CREATE OR REPLACE FUNCTION bronze.immutable_timestamptz(t TEXT) RETURNS TIMESTAMPTZ AS $$ SELECT t::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
+    CREATE OR REPLACE FUNCTION bronze.immutable_date(t TEXT) RETURNS DATE AS $$ SELECT t::DATE $$ LANGUAGE sql IMMUTABLE;
+    CREATE OR REPLACE FUNCTION bronze.immutable_numeric(t TEXT) RETURNS NUMERIC AS $$ SELECT t::NUMERIC $$ LANGUAGE sql IMMUTABLE;
+    CREATE OR REPLACE FUNCTION bronze.immutable_int(t TEXT) RETURNS INT AS $$ SELECT t::INT $$ LANGUAGE sql IMMUTABLE;
+    """)
+    conn.commit()
 
 # Generated columns - amanin biar gak fail
-for q in [
+    for q in [
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS event_id TEXT GENERATED ALWAYS AS (payload->>'event_id') STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS inventory_id TEXT GENERATED ALWAYS AS (payload->>'inventory_id') STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS stock_quantity INT GENERATED ALWAYS AS (bronze.immutable_int(payload->>'stock_quantity')) STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS snapshot_date_utc DATE GENERATED ALWAYS AS (bronze.immutable_date(payload->>'snapshot_date_utc')) STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS product_id TEXT GENERATED ALWAYS AS (payload->>'product_id') STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS store_id TEXT GENERATED ALWAYS AS (payload->>'store_id') STORED;",
-]:
+    ]:
+        try:
+            cur.execute(q); conn.commit()
+        except Exception as e:
+            print(f"Skip alter: {e}")
+            conn.rollback()
+
     try:
-        cur.execute(q); conn.commit()
-    except Exception as e:
-        print(f"Skip alter: {e}")
-        conn.rollback()
+        cur.execute("TRUNCATE bronze.payment_events RESTART IDENTITY CASCADE;")
+        conn.commit()
+    except: conn.rollback()
+    try:
+        cur.execute("TRUNCATE bronze.ingested_data_events RESTART IDENTITY CASCADE;")
+        conn.commit()
+    except: conn.rollback()
 
-try:
-    cur.execute("TRUNCATE bronze.payment_events RESTART IDENTITY CASCADE;")
-    conn.commit()
-except: conn.rollback()
-try:
-    cur.execute("TRUNCATE bronze.ingested_data_events RESTART IDENTITY CASCADE;")
-    conn.commit()
-except: conn.rollback()
-
-cur.close(); conn.close()
-print(">> Bronze truncated")
+    cur.close(); conn.close()
+    print(">> Bronze truncated")
 
 def resolve(p):
     for cand in [p, os.path.join("data/raw", p), os.path.join("data", p), os.path.basename(p), p.replace("data/raw/","")]:
@@ -152,10 +152,10 @@ if MANIFEST_PATH and os.path.exists(MANIFEST_PATH):
                 manifest_files = m.get("files", m.get("tables", m.get("sources", [])))
             elif isinstance(m, list):
                 manifest_files = m
-        ingest(MANIFEST_PATH, "ingested_data_events", "json", ["file_name"])
+        ingest("data/raw/operational/orders.json", "ingested_data_events", "json", ["order_id"])
     except Exception as e:
         print(f"Gagal baca manifest: {e}")
-
+    
 DEFAULT_FILES = [
     ("operational/customers.json","ingested_data_events","json",["customer_id"]),
     ("operational/customer_profiles.json","ingested_data_events","json",["customer_id"]),
@@ -165,7 +165,6 @@ DEFAULT_FILES = [
     ("operational/stores.json","ingested_data_events","json",["store_id"]),
     ("operational/sales_channels.json","ingested_data_events","json",["channel_id"]),
     ("operational/promotions.json","ingested_data_events","json",["promotion_id"]),
-    ("operational/orders.json","ingested_data_events","json",["order_id"]),
     ("operational/order_items.json","ingested_data_events","json",["order_item_id"]),
     ("operational/order_promotions.json","ingested_data_events","json",["order_id"]),
     ("events/payment_events.json","payment_events","json",["event_id"]),
