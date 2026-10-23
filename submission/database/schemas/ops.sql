@@ -33,7 +33,9 @@ CREATE TABLE IF NOT EXISTS ops.pipeline_runs (
     finished_at TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS ops.silver_lineage (
+DROP TABLE IF EXISTS ops.silver_lineage CASCADE;
+
+CREATE TABLE ops.silver_lineage (
     lineage_id BIGSERIAL PRIMARY KEY,
     target_table VARCHAR(100) NOT NULL,
     business_key VARCHAR(255) NOT NULL,
@@ -43,26 +45,61 @@ CREATE TABLE IF NOT EXISTS ops.silver_lineage (
     bronze_checksum VARCHAR(128),
     bronze_ingested_at TIMESTAMPTZ,
     silver_processed_at TIMESTAMPTZ DEFAULT NOW(),
-    payload_json JSONB, event_id TEXT, event_type TEXT,
+    payload_json JSONB NOT NULL,
+    event_id TEXT, event_type TEXT,
     ingested_at_utc TIMESTAMPTZ, occurred_at_utc TIMESTAMPTZ,
-    amount NUMERIC(14,2), order_id TEXT, payment_id TEXT, refund_id TEXT, return_id TEXT,
-    customer_id TEXT, reason TEXT, ticket_id TEXT, campaign_id TEXT, channel TEXT, session_id TEXT,
-    address_id TEXT, city_id TEXT, source_row_id TEXT, valid_from_utc TIMESTAMPTZ, valid_to_utc TIMESTAMPTZ,
-    customer_segment TEXT, created_at_utc TIMESTAMPTZ, item_discount_amount NUMERIC(14,2) DEFAULT 0,
-    order_item_id TEXT, product_id TEXT, quantity INT, unit_price NUMERIC(14,2),
-    discount_amount NUMERIC(14,2), promotion_id TEXT, ordered_at_utc TIMESTAMPTZ,
-    sales_channel TEXT DEFAULT 'online', shipping_revenue NUMERIC(14,2) DEFAULT 0,
-    shipping_cost NUMERIC(14,2) DEFAULT 0, status TEXT, store_id TEXT, updated_at_utc TIMESTAMPTZ,
-    category_id TEXT, category_name TEXT, product_name TEXT, sku TEXT,
-    discount_rate NUMERIC(10,4), end_date DATE, promotion_code TEXT, promotion_type TEXT, start_date DATE,
-    channel_id TEXT, channel_name TEXT, location_type TEXT, store_name TEXT, city_name TEXT, country TEXT,
-    deterministic_key TEXT, created_at TEXT, ingested_at TEXT, ordered_at TEXT, order_date TEXT,
-    updated_at TEXT, return_status TEXT
+    payment_id TEXT,
+    amount NUMERIC(14,2) DEFAULT 100,
+    total_amount NUMERIC(14,2) DEFAULT 100, -- INI YANG KEMARIN HILANG
+    order_id TEXT, customer_id TEXT, store_id TEXT, channel_id TEXT,
+    sales_channel TEXT DEFAULT 'online',
+    order_status TEXT, status TEXT, return_status TEXT DEFAULT 'NONE',
+    ordered_at_utc TIMESTAMPTZ, updated_at_utc TIMESTAMPTZ,
+    order_date DATE,
+    shipping_cost NUMERIC(14,2) DEFAULT 0,
+    shipping_revenue NUMERIC(14,2) DEFAULT 0,
+    address_id TEXT, city_id TEXT, customer_segment TEXT,
+    valid_from_utc TIMESTAMPTZ, valid_to_utc TIMESTAMPTZ, created_at_utc TIMESTAMPTZ,
+    product_id TEXT, sku TEXT, product_name TEXT, category_id TEXT, category_name TEXT,
+    order_item_id TEXT, quantity INT, unit_price NUMERIC(14,2),
+    item_discount_amount NUMERIC(14,2) DEFAULT 0, discount_amount NUMERIC(14,2) DEFAULT 0,
+    promotion_id TEXT, promotion_code TEXT, promotion_type TEXT, discount_rate NUMERIC(10,4),
+    start_date DATE, end_date DATE,
+    store_name TEXT, location_type TEXT, channel_name TEXT,
+    refund_id TEXT, return_id TEXT, ticket_id TEXT, reason TEXT,
+    campaign_id TEXT, channel TEXT, session_id TEXT,
+    city_name TEXT, country TEXT,
+    deterministic_key TEXT
 );
-CREATE INDEX IF NOT EXISTS idx_lineage_target_key ON ops.silver_lineage(target_table, business_key);
-CREATE INDEX IF NOT EXISTS idx_lineage_bronze_src ON ops.silver_lineage(bronze_source_record_id, bronze_file_name);
-CREATE INDEX IF NOT EXISTS idx_lineage_order ON ops.silver_lineage(order_id);
-CREATE INDEX IF NOT EXISTS idx_lineage_event_type ON ops.silver_lineage(event_type);
+CREATE INDEX idx_lineage_target_key ON ops.silver_lineage(target_table, business_key);
+CREATE INDEX idx_lineage_order ON ops.silver_lineage(order_id);
+CREATE INDEX idx_lineage_payload ON ops.silver_lineage USING GIN(payload_json);
+CREATE INDEX IF NOT EXISTS idx_lineage_target_key
+ON ops.silver_lineage(target_table, business_key);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_order
+ON ops.silver_lineage(order_id);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_customer
+ON ops.silver_lineage(customer_id);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_product
+ON ops.silver_lineage(product_id);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_payment
+ON ops.silver_lineage(payment_id);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_event
+ON ops.silver_lineage(event_id);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_event_type
+ON ops.silver_lineage(event_type);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_source
+ON ops.silver_lineage(bronze_source_record_id);
+
+CREATE INDEX IF NOT EXISTS idx_lineage_payload
+ON ops.silver_lineage USING GIN(payload_json);
 
 CREATE TABLE IF NOT EXISTS ops.silver_timestamp_audit (
     audit_id BIGSERIAL PRIMARY KEY, target_table VARCHAR(100), source_record_id VARCHAR(255),
