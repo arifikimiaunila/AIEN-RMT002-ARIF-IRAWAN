@@ -33,22 +33,6 @@ CREATE TABLE IF NOT EXISTS bronze.payment_events (
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS bronze.orders (
-  order_id TEXT PRIMARY KEY,
-  customer_id TEXT,
-  store_id TEXT,
-  channel_id TEXT,
-  sales_channel TEXT,
-  order_status TEXT,
-  status TEXT,
-  ordered_at_utc TIMESTAMPTZ,
-  order_date_utc DATE,
-  total_amount NUMERIC,
-  shipping_cost NUMERIC,
-  source_file TEXT,
-  ingested_at TIMESTAMPTZ DEFAULT NOW()
-);
-
 CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     id BIGSERIAL PRIMARY KEY,
     file_name VARCHAR(255) NOT NULL,
