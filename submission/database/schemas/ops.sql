@@ -50,7 +50,6 @@ CREATE TABLE ops.silver_lineage (
     ingested_at_utc TIMESTAMPTZ, occurred_at_utc TIMESTAMPTZ,
     payment_id TEXT,
     amount NUMERIC(14,2) DEFAULT 100,
-    total_amount NUMERIC(14,2) DEFAULT 100, -- INI YANG KEMARIN HILANG
     order_id TEXT, customer_id TEXT, store_id TEXT, channel_id TEXT,
     sales_channel TEXT DEFAULT 'online',
     order_status TEXT, status TEXT, return_status TEXT DEFAULT 'NONE',
