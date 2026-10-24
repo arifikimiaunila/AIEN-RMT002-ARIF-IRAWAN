@@ -187,8 +187,8 @@ def run_bronze():
     conn3=get_conn(); cur3=conn3.cursor()
 
     conn3.commit()
-    cur3.execute("SELECT COUNT(*) FROM bronze.orders;")
-    print(f"bronze.orders count: {cur3.fetchone()[0]}")
+    cur3.execute("SELECT COUNT(*) FROM bronze.ingested_data_events;")
+    print(f"bronze.ingested_data_events count: {cur3.fetchone()[0]}")
     cur3.execute("SELECT COUNT(*) FROM silver.orders;")
     print(f"silver.orders count: {cur3.fetchone()[0]}")
     # ====== AKHIR INSERT BARU ======
