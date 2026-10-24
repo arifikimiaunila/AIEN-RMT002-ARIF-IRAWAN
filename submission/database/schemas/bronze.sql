@@ -47,6 +47,13 @@ CREATE TABLE IF NOT EXISTS bronze.ingested_data_events (
     occurred_at_utc TIMESTAMPTZ GENERATED ALWAYS AS (bronze.immutable_timestamptz(payload->>'occurred_at_utc')) STORED,
     amount NUMERIC(14,2) GENERATED ALWAYS AS (bronze.immutable_numeric(payload->>'amount')) STORED,
     order_id TEXT GENERATED ALWAYS AS (payload->>'order_id') STORED,
+    payment_amount NUMERIC(14,2) GENERATED ALWAYS AS (
+        COALESCE(
+            bronze.jsonb_to_numeric(payload, 'payment_amount'),
+            bronze.jsonb_to_numeric(payload, 'amount'),
+            0
+        )
+    ) STORED,
     payment_id TEXT GENERATED ALWAYS AS (payload->>'payment_id') STORED,
     refund_id TEXT GENERATED ALWAYS AS (payload->>'refund_id') STORED,
     return_id TEXT GENERATED ALWAYS AS (payload->>'return_id') STORED,
