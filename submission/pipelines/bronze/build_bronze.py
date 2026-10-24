@@ -3,6 +3,7 @@
 # ======================================================
 import os
 import json
+import pandas
 os.environ['JAVA_HOME'] = '/usr/lib/jvm/java-17-openjdk-amd64'
 os.environ['PATH'] = f"{os.environ['JAVA_HOME']}/bin:{os.environ.get('PATH')}"
 
@@ -55,43 +56,44 @@ def get_conn():
     return conn
 
 # --- INIT BRONZE SCHEMA + FUNCTIONS ---
-c   onn = get_conn()
-    cur = conn.cursor()
-    cur.execute("CREATE SCHEMA IF NOT EXISTS bronze;")
-    cur.execute("""
-    CREATE OR REPLACE FUNCTION bronze.immutable_timestamptz(t TEXT) RETURNS TIMESTAMPTZ AS $$ SELECT t::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
-    CREATE OR REPLACE FUNCTION bronze.immutable_date(t TEXT) RETURNS DATE AS $$ SELECT t::DATE $$ LANGUAGE sql IMMUTABLE;
-    CREATE OR REPLACE FUNCTION bronze.immutable_numeric(t TEXT) RETURNS NUMERIC AS $$ SELECT t::NUMERIC $$ LANGUAGE sql IMMUTABLE;
-    CREATE OR REPLACE FUNCTION bronze.immutable_int(t TEXT) RETURNS INT AS $$ SELECT t::INT $$ LANGUAGE sql IMMUTABLE;
-    """)
-    conn.commit()
+conn = get_conn()
+cur = conn.cursor()
+cur.execute("CREATE SCHEMA IF NOT EXISTS bronze;")
+cur.execute("""
+CREATE OR REPLACE FUNCTION bronze.immutable_timestamptz(t TEXT) RETURNS TIMESTAMPTZ AS $$ SELECT t::TIMESTAMPTZ $$ LANGUAGE sql IMMUTABLE;
+CREATE OR REPLACE FUNCTION bronze.immutable_date(t TEXT) RETURNS DATE AS $$ SELECT t::DATE $$ LANGUAGE sql IMMUTABLE;
+CREATE OR REPLACE FUNCTION bronze.immutable_numeric(t TEXT) RETURNS NUMERIC AS $$ SELECT t::NUMERIC $$ LANGUAGE sql IMMUTABLE;
+CREATE OR REPLACE FUNCTION bronze.immutable_int(t TEXT) RETURNS INT AS $$ SELECT t::INT $$ LANGUAGE sql IMMUTABLE;
+""")
+conn.commit()
 
 # Generated columns - amanin biar gak fail
-    for q in [
+for q in [
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS event_id TEXT GENERATED ALWAYS AS (payload->>'event_id') STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS inventory_id TEXT GENERATED ALWAYS AS (payload->>'inventory_id') STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS stock_quantity INT GENERATED ALWAYS AS (bronze.immutable_int(payload->>'stock_quantity')) STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS snapshot_date_utc DATE GENERATED ALWAYS AS (bronze.immutable_date(payload->>'snapshot_date_utc')) STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS product_id TEXT GENERATED ALWAYS AS (payload->>'product_id') STORED;",
     "ALTER TABLE bronze.ingested_data_events ADD COLUMN IF NOT EXISTS store_id TEXT GENERATED ALWAYS AS (payload->>'store_id') STORED;",
-    ]:
-        try:
-            cur.execute(q); conn.commit()
-        except Exception as e:
-            print(f"Skip alter: {e}")
-            conn.rollback()
-
+]:
     try:
-        cur.execute("TRUNCATE bronze.payment_events RESTART IDENTITY CASCADE;")
-        conn.commit()
-    except: conn.rollback()
-    try:
-        cur.execute("TRUNCATE bronze.ingested_data_events RESTART IDENTITY CASCADE;")
-        conn.commit()
-    except: conn.rollback()
+        cur.execute(q); conn.commit()
+    except Exception as e:
+        print(f"Skip alter: {e}")
+        conn.rollback()
 
-    cur.close(); conn.close()
-    print(">> Bronze truncated")
+try:
+    cur.execute("TRUNCATE bronze.payment_events RESTART IDENTITY CASCADE;")
+    conn.commit()
+except: conn.rollback()
+
+try:
+    cur.execute("TRUNCATE bronze.ingested_data_events ;")
+    conn.commit()
+except: conn.rollback()
+
+cur.close(); conn.close()
+print(">> Bronze truncated")
 
 def resolve(p):
     for cand in [p, os.path.join("data/raw", p), os.path.join("data", p), os.path.basename(p), p.replace("data/raw/","")]:
@@ -152,11 +154,12 @@ if MANIFEST_PATH and os.path.exists(MANIFEST_PATH):
                 manifest_files = m.get("files", m.get("tables", m.get("sources", [])))
             elif isinstance(m, list):
                 manifest_files = m
-        ingest("data/raw/operational/orders.json", "ingested_data_events", "json", ["order_id"])
+        ingest(MANIFEST_PATH, "ingested_data_events", "json", ["file_name"])
     except Exception as e:
         print(f"Gagal baca manifest: {e}")
-    
+
 DEFAULT_FILES = [
+    ("operational/orders.json","ingested_data_events","json",["order_id"]),
     ("operational/customers.json","ingested_data_events","json",["customer_id"]),
     ("operational/customer_profiles.json","ingested_data_events","json",["customer_id"]),
     ("operational/customer_addresses.json","ingested_data_events","json",["address_id"]),
@@ -165,6 +168,7 @@ DEFAULT_FILES = [
     ("operational/stores.json","ingested_data_events","json",["store_id"]),
     ("operational/sales_channels.json","ingested_data_events","json",["channel_id"]),
     ("operational/promotions.json","ingested_data_events","json",["promotion_id"]),
+    ("operational/orders.json","ingested_data_events","json",["order_id"]),
     ("operational/order_items.json","ingested_data_events","json",["order_item_id"]),
     ("operational/order_promotions.json","ingested_data_events","json",["order_id"]),
     ("events/payment_events.json","payment_events","json",["event_id"]),
@@ -179,33 +183,11 @@ DEFAULT_FILES = [
 
 def run_bronze():
     total=0
+    
     for path, table, fmt, ids in DEFAULT_FILES:
         total+=ingest(path, table, fmt, ids)
-    
     conn3=get_conn(); cur3=conn3.cursor()
-    print(">> Populate bronze.orders from ops.silver_lineage...")
-    cur3.execute("""
-        INSERT INTO bronze.orders (order_id, customer_id, store_id, channel_id, sales_channel, order_status, status, ordered_at_utc, order_date_utc, total_amount, shipping_cost, source_file)
-        SELECT DISTINCT ON (l.order_id)
-          l.order_id,
-          l.customer_id,
-          COALESCE(l.store_id,'STORE_001'),
-          COALESCE(l.channel_id,'CH_001'),
-          COALESCE(l.sales_channel,'online'),
-          COALESCE(l.status,'completed'),
-          COALESCE(l.status,'completed'),
-          COALESCE(l.ordered_at_utc, NOW()),
-          COALESCE(l.ordered_at_utc::date, CURRENT_DATE),
-          COALESCE(l.amount,0),
-          COALESCE(l.shipping_cost,0),
-          l.bronze_file_name
-        FROM ops.silver_lineage l
-        WHERE l.target_table='silver.orders' AND l.order_id IS NOT NULL
-        ORDER BY l.order_id, l.bronze_ingested_at DESC
-        ON CONFLICT (order_id) DO UPDATE SET
-          customer_id=EXCLUDED.customer_id,
-          total_amount=EXCLUDED.total_amount;
-    """)
+
     conn3.commit()
     cur3.execute("SELECT COUNT(*) FROM bronze.orders;")
     print(f"bronze.orders count: {cur3.fetchone()[0]}")
@@ -220,6 +202,8 @@ def run_bronze():
     row = cur3.fetchone()
     print(f"payment_events: {row[0] if row is not None else 0}")
     cur3.close(); conn3.close()
+    cur3.close(); conn3.close()
+    
     print(f"\nDONE Bronze {total} rows")
     return total
     
@@ -229,7 +213,7 @@ def run_bronze():
     cur3.execute("SELECT COUNT(*) FROM bronze.payment_events;")
     row = cur3.fetchone()
     print(f"payment_events: {row[0] if row is not None else 0}")
-    cur3.close(); conn3.close()
+    
     print(f"\nDONE Bronze {total} rows")
     return total
 
