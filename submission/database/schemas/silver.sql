@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS silver.orders (
     order_id VARCHAR(100) PRIMARY KEY, customer_id VARCHAR(100), store_id VARCHAR(100), channel_id VARCHAR(100),
     sales_channel TEXT DEFAULT 'online', order_status TEXT, status TEXT,
     order_date_utc TIMESTAMPTZ, ordered_at_utc TIMESTAMPTZ, updated_at_utc TIMESTAMPTZ,
-    total_amount NUMERIC(14,2) DEFAULT 100 NOT NULL, shipping_cost NUMERIC(14,2) DEFAULT 0, shipping_revenue NUMERIC(14,2) DEFAULT 0,
+    amount NUMERIC(14,2) DEFAULT 100 NOT NULL, shipping_cost NUMERIC(14,2) DEFAULT 0, shipping_revenue NUMERIC(14,2) DEFAULT 0,
     return_status TEXT DEFAULT 'NONE', source_row_id TEXT, bronze_file_name VARCHAR(255), bronze_row_number INT,
     silver_processed_at TIMESTAMPTZ DEFAULT NOW(), is_current BOOLEAN DEFAULT TRUE,
     is_late_arriving BOOLEAN DEFAULT FALSE, is_orphan BOOLEAN DEFAULT FALSE, deterministic_key VARCHAR(512),
