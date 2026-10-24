@@ -1,6 +1,4 @@
-# ======================================================
-# build_bronze.py - FINAL V4.5 - FIX manifest + conn
-# ======================================================
+
 import os
 import json
 import pandas
