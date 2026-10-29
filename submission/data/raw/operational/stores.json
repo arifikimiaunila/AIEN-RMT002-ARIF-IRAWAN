@@ -1,0 +1,37 @@
+[
+  {
+    "city_id": "BDG",
+    "location_type": "physical",
+    "source_row_id": "STORE-ROW-01",
+    "store_id": "STORE-01",
+    "store_name": "Retail Store 01"
+  },
+  {
+    "city_id": "SBY",
+    "location_type": "physical",
+    "source_row_id": "STORE-ROW-02",
+    "store_id": "STORE-02",
+    "store_name": "Retail Store 02"
+  },
+  {
+    "city_id": "MDN",
+    "location_type": "physical",
+    "source_row_id": "STORE-ROW-03",
+    "store_id": "STORE-03",
+    "store_name": "Retail Store 03"
+  },
+  {
+    "city_id": "DPS",
+    "location_type": "physical",
+    "source_row_id": "STORE-ROW-04",
+    "store_id": "STORE-04",
+    "store_name": "Retail Store 04"
+  },
+  {
+    "city_id": "MKS",
+    "location_type": "physical",
+    "source_row_id": "STORE-ROW-05",
+    "store_id": "STORE-05",
+    "store_name": "Retail Store 05"
+  }
+]

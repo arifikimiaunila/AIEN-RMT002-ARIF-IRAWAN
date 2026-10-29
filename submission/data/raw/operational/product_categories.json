@@ -1,0 +1,690 @@
+[
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00001",
+    "source_row_id": "CATEGORY-ROW-000001-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00002",
+    "source_row_id": "CATEGORY-ROW-000002-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00003",
+    "source_row_id": "CATEGORY-ROW-000003-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00004",
+    "source_row_id": "CATEGORY-ROW-000004-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00005",
+    "source_row_id": "CATEGORY-ROW-000005-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00006",
+    "source_row_id": "CATEGORY-ROW-000006-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00007",
+    "source_row_id": "CATEGORY-ROW-000007-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00008",
+    "source_row_id": "CATEGORY-ROW-000008-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00009",
+    "source_row_id": "CATEGORY-ROW-000009-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00010",
+    "source_row_id": "CATEGORY-ROW-000010-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00011",
+    "source_row_id": "CATEGORY-ROW-000011-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00012",
+    "source_row_id": "CATEGORY-ROW-000012-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00013",
+    "source_row_id": "CATEGORY-ROW-000013-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-08-10T23:59:59Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00013",
+    "source_row_id": "CATEGORY-ROW-000013-02",
+    "valid_from_utc": "2026-08-11T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00014",
+    "source_row_id": "CATEGORY-ROW-000014-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00015",
+    "source_row_id": "CATEGORY-ROW-000015-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00016",
+    "source_row_id": "CATEGORY-ROW-000016-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00017",
+    "source_row_id": "CATEGORY-ROW-000017-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00018",
+    "source_row_id": "CATEGORY-ROW-000018-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00019",
+    "source_row_id": "CATEGORY-ROW-000019-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00020",
+    "source_row_id": "CATEGORY-ROW-000020-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00021",
+    "source_row_id": "CATEGORY-ROW-000021-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00022",
+    "source_row_id": "CATEGORY-ROW-000022-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00023",
+    "source_row_id": "CATEGORY-ROW-000023-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00024",
+    "source_row_id": "CATEGORY-ROW-000024-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00025",
+    "source_row_id": "CATEGORY-ROW-000025-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00026",
+    "source_row_id": "CATEGORY-ROW-000026-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-08-10T23:59:59Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00026",
+    "source_row_id": "CATEGORY-ROW-000026-02",
+    "valid_from_utc": "2026-08-11T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00027",
+    "source_row_id": "CATEGORY-ROW-000027-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00028",
+    "source_row_id": "CATEGORY-ROW-000028-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00029",
+    "source_row_id": "CATEGORY-ROW-000029-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00030",
+    "source_row_id": "CATEGORY-ROW-000030-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00031",
+    "source_row_id": "CATEGORY-ROW-000031-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00032",
+    "source_row_id": "CATEGORY-ROW-000032-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00033",
+    "source_row_id": "CATEGORY-ROW-000033-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00034",
+    "source_row_id": "CATEGORY-ROW-000034-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00035",
+    "source_row_id": "CATEGORY-ROW-000035-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00036",
+    "source_row_id": "CATEGORY-ROW-000036-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00037",
+    "source_row_id": "CATEGORY-ROW-000037-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00038",
+    "source_row_id": "CATEGORY-ROW-000038-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00039",
+    "source_row_id": "CATEGORY-ROW-000039-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-08-10T23:59:59Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00039",
+    "source_row_id": "CATEGORY-ROW-000039-02",
+    "valid_from_utc": "2026-08-11T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00040",
+    "source_row_id": "CATEGORY-ROW-000040-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00041",
+    "source_row_id": "CATEGORY-ROW-000041-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00042",
+    "source_row_id": "CATEGORY-ROW-000042-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00043",
+    "source_row_id": "CATEGORY-ROW-000043-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00044",
+    "source_row_id": "CATEGORY-ROW-000044-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00045",
+    "source_row_id": "CATEGORY-ROW-000045-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00046",
+    "source_row_id": "CATEGORY-ROW-000046-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00047",
+    "source_row_id": "CATEGORY-ROW-000047-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00048",
+    "source_row_id": "CATEGORY-ROW-000048-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00049",
+    "source_row_id": "CATEGORY-ROW-000049-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00050",
+    "source_row_id": "CATEGORY-ROW-000050-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00051",
+    "source_row_id": "CATEGORY-ROW-000051-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00052",
+    "source_row_id": "CATEGORY-ROW-000052-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-08-10T23:59:59Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00052",
+    "source_row_id": "CATEGORY-ROW-000052-02",
+    "valid_from_utc": "2026-08-11T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00053",
+    "source_row_id": "CATEGORY-ROW-000053-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00054",
+    "source_row_id": "CATEGORY-ROW-000054-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00055",
+    "source_row_id": "CATEGORY-ROW-000055-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00056",
+    "source_row_id": "CATEGORY-ROW-000056-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00057",
+    "source_row_id": "CATEGORY-ROW-000057-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00058",
+    "source_row_id": "CATEGORY-ROW-000058-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00059",
+    "source_row_id": "CATEGORY-ROW-000059-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00060",
+    "source_row_id": "CATEGORY-ROW-000060-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00061",
+    "source_row_id": "CATEGORY-ROW-000061-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00062",
+    "source_row_id": "CATEGORY-ROW-000062-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00063",
+    "source_row_id": "CATEGORY-ROW-000063-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00064",
+    "source_row_id": "CATEGORY-ROW-000064-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00065",
+    "source_row_id": "CATEGORY-ROW-000065-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-08-10T23:59:59Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00065",
+    "source_row_id": "CATEGORY-ROW-000065-02",
+    "valid_from_utc": "2026-08-11T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00066",
+    "source_row_id": "CATEGORY-ROW-000066-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00067",
+    "source_row_id": "CATEGORY-ROW-000067-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00068",
+    "source_row_id": "CATEGORY-ROW-000068-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00069",
+    "source_row_id": "CATEGORY-ROW-000069-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00070",
+    "source_row_id": "CATEGORY-ROW-000070-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-04",
+    "category_name": "grocery",
+    "product_id": "PROD-00071",
+    "source_row_id": "CATEGORY-ROW-000071-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00072",
+    "source_row_id": "CATEGORY-ROW-000072-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-01",
+    "category_name": "electronics",
+    "product_id": "PROD-00073",
+    "source_row_id": "CATEGORY-ROW-000073-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00074",
+    "source_row_id": "CATEGORY-ROW-000074-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00075",
+    "source_row_id": "CATEGORY-ROW-000075-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-05",
+    "category_name": "beauty",
+    "product_id": "PROD-00076",
+    "source_row_id": "CATEGORY-ROW-000076-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00077",
+    "source_row_id": "CATEGORY-ROW-000077-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00078",
+    "source_row_id": "CATEGORY-ROW-000078-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-08-10T23:59:59Z"
+  },
+  {
+    "category_id": "CAT-02",
+    "category_name": "home",
+    "product_id": "PROD-00078",
+    "source_row_id": "CATEGORY-ROW-000078-02",
+    "valid_from_utc": "2026-08-11T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-06",
+    "category_name": "sports",
+    "product_id": "PROD-00079",
+    "source_row_id": "CATEGORY-ROW-000079-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  },
+  {
+    "category_id": "CAT-03",
+    "category_name": "fashion",
+    "product_id": "PROD-00080",
+    "source_row_id": "CATEGORY-ROW-000080-01",
+    "valid_from_utc": "2026-06-22T00:00:00Z",
+    "valid_to_utc": "2026-09-21T00:00:00Z"
+  }
+]

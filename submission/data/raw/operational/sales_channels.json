@@ -1,0 +1,22 @@
+[
+  {
+    "channel_id": "WEB",
+    "channel_name": "WEB",
+    "source_row_id": "CHANNEL-ROW-01"
+  },
+  {
+    "channel_id": "MOBILE_APP",
+    "channel_name": "MOBILE_APP",
+    "source_row_id": "CHANNEL-ROW-02"
+  },
+  {
+    "channel_id": "MARKETPLACE",
+    "channel_name": "MARKETPLACE",
+    "source_row_id": "CHANNEL-ROW-03"
+  },
+  {
+    "channel_id": "STORE",
+    "channel_name": "STORE",
+    "source_row_id": "CHANNEL-ROW-04"
+  }
+]

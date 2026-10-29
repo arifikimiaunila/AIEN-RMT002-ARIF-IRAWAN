@@ -1,0 +1,562 @@
+[
+  {
+    "product_id": "PROD-00001",
+    "product_name": "Synthetic Product 0001",
+    "sku": "SKU-000001",
+    "source_row_id": "PRODUCT-ROW-000001",
+    "unit_price": 92.83
+  },
+  {
+    "product_id": "PROD-00002",
+    "product_name": "Synthetic Product 0002",
+    "sku": "SKU-000002",
+    "source_row_id": "PRODUCT-ROW-000002",
+    "unit_price": 360.29
+  },
+  {
+    "product_id": "PROD-00003",
+    "product_name": "Synthetic Product 0003",
+    "sku": "SKU-000003",
+    "source_row_id": "PRODUCT-ROW-000003",
+    "unit_price": 213.16
+  },
+  {
+    "product_id": "PROD-00004",
+    "product_name": "Synthetic Product 0004",
+    "sku": "SKU-000004",
+    "source_row_id": "PRODUCT-ROW-000004",
+    "unit_price": 446.15
+  },
+  {
+    "product_id": "PROD-00005",
+    "product_name": "Synthetic Product 0005",
+    "sku": "SKU-000005",
+    "source_row_id": "PRODUCT-ROW-000005",
+    "unit_price": 293.94
+  },
+  {
+    "product_id": "PROD-00006",
+    "product_name": "Synthetic Product 0006",
+    "sku": "SKU-000006",
+    "source_row_id": "PRODUCT-ROW-000006",
+    "unit_price": 97.28
+  },
+  {
+    "product_id": "PROD-00007",
+    "product_name": "Synthetic Product 0007",
+    "sku": "SKU-000007",
+    "source_row_id": "PRODUCT-ROW-000007",
+    "unit_price": 68.3
+  },
+  {
+    "product_id": "PROD-00008",
+    "product_name": "Synthetic Product 0008",
+    "sku": "SKU-000008",
+    "source_row_id": "PRODUCT-ROW-000008",
+    "unit_price": 357.03
+  },
+  {
+    "product_id": "PROD-00009",
+    "product_name": "Synthetic Product 0009",
+    "sku": "SKU-000009",
+    "source_row_id": "PRODUCT-ROW-000009",
+    "unit_price": 299.13
+  },
+  {
+    "product_id": "PROD-00010",
+    "product_name": "Synthetic Product 0010",
+    "sku": "SKU-000010",
+    "source_row_id": "PRODUCT-ROW-000010",
+    "unit_price": 292.78
+  },
+  {
+    "product_id": "PROD-00011",
+    "product_name": "Synthetic Product 0011",
+    "sku": "SKU-000011",
+    "source_row_id": "PRODUCT-ROW-000011",
+    "unit_price": 433.99
+  },
+  {
+    "product_id": "PROD-00012",
+    "product_name": "Synthetic Product 0012",
+    "sku": "SKU-000012",
+    "source_row_id": "PRODUCT-ROW-000012",
+    "unit_price": 353.75
+  },
+  {
+    "product_id": "PROD-00013",
+    "product_name": "Synthetic Product 0013",
+    "sku": "SKU-000013",
+    "source_row_id": "PRODUCT-ROW-000013",
+    "unit_price": 387.94
+  },
+  {
+    "product_id": "PROD-00014",
+    "product_name": "Synthetic Product 0014",
+    "sku": "SKU-000014",
+    "source_row_id": "PRODUCT-ROW-000014",
+    "unit_price": 273.91
+  },
+  {
+    "product_id": "PROD-00015",
+    "product_name": "Synthetic Product 0015",
+    "sku": "SKU-000015",
+    "source_row_id": "PRODUCT-ROW-000015",
+    "unit_price": 406.05
+  },
+  {
+    "product_id": "PROD-00016",
+    "product_name": "Synthetic Product 0016",
+    "sku": "SKU-000016",
+    "source_row_id": "PRODUCT-ROW-000016",
+    "unit_price": 404.37
+  },
+  {
+    "product_id": "PROD-00017",
+    "product_name": "Synthetic Product 0017",
+    "sku": "SKU-000017",
+    "source_row_id": "PRODUCT-ROW-000017",
+    "unit_price": 298.58
+  },
+  {
+    "product_id": "PROD-00018",
+    "product_name": "Synthetic Product 0018",
+    "sku": "SKU-000018",
+    "source_row_id": "PRODUCT-ROW-000018",
+    "unit_price": 183.43
+  },
+  {
+    "product_id": "PROD-00019",
+    "product_name": "Synthetic Product 0019",
+    "sku": "SKU-000019",
+    "source_row_id": "PRODUCT-ROW-000019",
+    "unit_price": 380.5
+  },
+  {
+    "product_id": "PROD-00020",
+    "product_name": "Synthetic Product 0020",
+    "sku": "SKU-000020",
+    "source_row_id": "PRODUCT-ROW-000020",
+    "unit_price": 57.47
+  },
+  {
+    "product_id": "PROD-00021",
+    "product_name": "Synthetic Product 0021",
+    "sku": "SKU-000021",
+    "source_row_id": "PRODUCT-ROW-000021",
+    "unit_price": 229.11
+  },
+  {
+    "product_id": "PROD-00022",
+    "product_name": "Synthetic Product 0022",
+    "sku": "SKU-000022",
+    "source_row_id": "PRODUCT-ROW-000022",
+    "unit_price": 238.71
+  },
+  {
+    "product_id": "PROD-00023",
+    "product_name": "Synthetic Product 0023",
+    "sku": "SKU-000023",
+    "source_row_id": "PRODUCT-ROW-000023",
+    "unit_price": 427.76
+  },
+  {
+    "product_id": "PROD-00024",
+    "product_name": "Synthetic Product 0024",
+    "sku": "SKU-000024",
+    "source_row_id": "PRODUCT-ROW-000024",
+    "unit_price": 119.3
+  },
+  {
+    "product_id": "PROD-00025",
+    "product_name": "Synthetic Product 0025",
+    "sku": "SKU-000025",
+    "source_row_id": "PRODUCT-ROW-000025",
+    "unit_price": 113.23
+  },
+  {
+    "product_id": "PROD-00026",
+    "product_name": "Synthetic Product 0026",
+    "sku": "SKU-000026",
+    "source_row_id": "PRODUCT-ROW-000026",
+    "unit_price": 349.75
+  },
+  {
+    "product_id": "PROD-00027",
+    "product_name": "Synthetic Product 0027",
+    "sku": "SKU-000027",
+    "source_row_id": "PRODUCT-ROW-000027",
+    "unit_price": 375.89
+  },
+  {
+    "product_id": "PROD-00028",
+    "product_name": "Synthetic Product 0028",
+    "sku": "SKU-000028",
+    "source_row_id": "PRODUCT-ROW-000028",
+    "unit_price": 180.36
+  },
+  {
+    "product_id": "PROD-00029",
+    "product_name": "Synthetic Product 0029",
+    "sku": "SKU-000029",
+    "source_row_id": "PRODUCT-ROW-000029",
+    "unit_price": 336.83
+  },
+  {
+    "product_id": "PROD-00030",
+    "product_name": "Synthetic Product 0030",
+    "sku": "SKU-000030",
+    "source_row_id": "PRODUCT-ROW-000030",
+    "unit_price": 104.36
+  },
+  {
+    "product_id": "PROD-00031",
+    "product_name": "Synthetic Product 0031",
+    "sku": "SKU-000031",
+    "source_row_id": "PRODUCT-ROW-000031",
+    "unit_price": 85.42
+  },
+  {
+    "product_id": "PROD-00032",
+    "product_name": "Synthetic Product 0032",
+    "sku": "SKU-000032",
+    "source_row_id": "PRODUCT-ROW-000032",
+    "unit_price": 202.25
+  },
+  {
+    "product_id": "PROD-00033",
+    "product_name": "Synthetic Product 0033",
+    "sku": "SKU-000033",
+    "source_row_id": "PRODUCT-ROW-000033",
+    "unit_price": 389.4
+  },
+  {
+    "product_id": "PROD-00034",
+    "product_name": "Synthetic Product 0034",
+    "sku": "SKU-000034",
+    "source_row_id": "PRODUCT-ROW-000034",
+    "unit_price": 224.74
+  },
+  {
+    "product_id": "PROD-00035",
+    "product_name": "Synthetic Product 0035",
+    "sku": "SKU-000035",
+    "source_row_id": "PRODUCT-ROW-000035",
+    "unit_price": 317.23
+  },
+  {
+    "product_id": "PROD-00036",
+    "product_name": "Synthetic Product 0036",
+    "sku": "SKU-000036",
+    "source_row_id": "PRODUCT-ROW-000036",
+    "unit_price": 147.89
+  },
+  {
+    "product_id": "PROD-00037",
+    "product_name": "Synthetic Product 0037",
+    "sku": "SKU-000037",
+    "source_row_id": "PRODUCT-ROW-000037",
+    "unit_price": 217.89
+  },
+  {
+    "product_id": "PROD-00038",
+    "product_name": "Synthetic Product 0038",
+    "sku": "SKU-000038",
+    "source_row_id": "PRODUCT-ROW-000038",
+    "unit_price": 433.79
+  },
+  {
+    "product_id": "PROD-00039",
+    "product_name": "Synthetic Product 0039",
+    "sku": "SKU-000039",
+    "source_row_id": "PRODUCT-ROW-000039",
+    "unit_price": 168.45
+  },
+  {
+    "product_id": "PROD-00040",
+    "product_name": "Synthetic Product 0040",
+    "sku": "SKU-000040",
+    "source_row_id": "PRODUCT-ROW-000040",
+    "unit_price": 17.31
+  },
+  {
+    "product_id": "PROD-00041",
+    "product_name": "Synthetic Product 0041",
+    "sku": "SKU-000041",
+    "source_row_id": "PRODUCT-ROW-000041",
+    "unit_price": 23.39
+  },
+  {
+    "product_id": "PROD-00042",
+    "product_name": "Synthetic Product 0042",
+    "sku": "SKU-000042",
+    "source_row_id": "PRODUCT-ROW-000042",
+    "unit_price": 300.7
+  },
+  {
+    "product_id": "PROD-00043",
+    "product_name": "Synthetic Product 0043",
+    "sku": "SKU-000043",
+    "source_row_id": "PRODUCT-ROW-000043",
+    "unit_price": 313.28
+  },
+  {
+    "product_id": "PROD-00044",
+    "product_name": "Synthetic Product 0044",
+    "sku": "SKU-000044",
+    "source_row_id": "PRODUCT-ROW-000044",
+    "unit_price": 113.94
+  },
+  {
+    "product_id": "PROD-00045",
+    "product_name": "Synthetic Product 0045",
+    "sku": "SKU-000045",
+    "source_row_id": "PRODUCT-ROW-000045",
+    "unit_price": 178.03
+  },
+  {
+    "product_id": "PROD-00046",
+    "product_name": "Synthetic Product 0046",
+    "sku": "SKU-000046",
+    "source_row_id": "PRODUCT-ROW-000046",
+    "unit_price": 431.65
+  },
+  {
+    "product_id": "PROD-00047",
+    "product_name": "Synthetic Product 0047",
+    "sku": "SKU-000047",
+    "source_row_id": "PRODUCT-ROW-000047",
+    "unit_price": 407.2
+  },
+  {
+    "product_id": "PROD-00048",
+    "product_name": "Synthetic Product 0048",
+    "sku": "SKU-000048",
+    "source_row_id": "PRODUCT-ROW-000048",
+    "unit_price": 61.95
+  },
+  {
+    "product_id": "PROD-00049",
+    "product_name": "Synthetic Product 0049",
+    "sku": "SKU-000049",
+    "source_row_id": "PRODUCT-ROW-000049",
+    "unit_price": 387.08
+  },
+  {
+    "product_id": "PROD-00050",
+    "product_name": "Synthetic Product 0050",
+    "sku": "SKU-000050",
+    "source_row_id": "PRODUCT-ROW-000050",
+    "unit_price": 11.48
+  },
+  {
+    "product_id": "PROD-00051",
+    "product_name": "Synthetic Product 0051",
+    "sku": "SKU-000051",
+    "source_row_id": "PRODUCT-ROW-000051",
+    "unit_price": 417.96
+  },
+  {
+    "product_id": "PROD-00052",
+    "product_name": "Synthetic Product 0052",
+    "sku": "SKU-000052",
+    "source_row_id": "PRODUCT-ROW-000052",
+    "unit_price": 140.99
+  },
+  {
+    "product_id": "PROD-00053",
+    "product_name": "Synthetic Product 0053",
+    "sku": "SKU-000053",
+    "source_row_id": "PRODUCT-ROW-000053",
+    "unit_price": 100.99
+  },
+  {
+    "product_id": "PROD-00054",
+    "product_name": "Synthetic Product 0054",
+    "sku": "SKU-000054",
+    "source_row_id": "PRODUCT-ROW-000054",
+    "unit_price": 412.82
+  },
+  {
+    "product_id": "PROD-00055",
+    "product_name": "Synthetic Product 0055",
+    "sku": "SKU-000055",
+    "source_row_id": "PRODUCT-ROW-000055",
+    "unit_price": 148.2
+  },
+  {
+    "product_id": "PROD-00056",
+    "product_name": "Synthetic Product 0056",
+    "sku": "SKU-000056",
+    "source_row_id": "PRODUCT-ROW-000056",
+    "unit_price": 187.58
+  },
+  {
+    "product_id": "PROD-00057",
+    "product_name": "Synthetic Product 0057",
+    "sku": "SKU-000057",
+    "source_row_id": "PRODUCT-ROW-000057",
+    "unit_price": 129.12
+  },
+  {
+    "product_id": "PROD-00058",
+    "product_name": "Synthetic Product 0058",
+    "sku": "SKU-000058",
+    "source_row_id": "PRODUCT-ROW-000058",
+    "unit_price": 371.85
+  },
+  {
+    "product_id": "PROD-00059",
+    "product_name": "Synthetic Product 0059",
+    "sku": "SKU-000059",
+    "source_row_id": "PRODUCT-ROW-000059",
+    "unit_price": 216.22
+  },
+  {
+    "product_id": "PROD-00060",
+    "product_name": "Synthetic Product 0060",
+    "sku": "SKU-000060",
+    "source_row_id": "PRODUCT-ROW-000060",
+    "unit_price": 417.51
+  },
+  {
+    "product_id": "PROD-00061",
+    "product_name": "Synthetic Product 0061",
+    "sku": "SKU-000061",
+    "source_row_id": "PRODUCT-ROW-000061",
+    "unit_price": 325.08
+  },
+  {
+    "product_id": "PROD-00062",
+    "product_name": "Synthetic Product 0062",
+    "sku": "SKU-000062",
+    "source_row_id": "PRODUCT-ROW-000062",
+    "unit_price": 372.39
+  },
+  {
+    "product_id": "PROD-00063",
+    "product_name": "Synthetic Product 0063",
+    "sku": "SKU-000063",
+    "source_row_id": "PRODUCT-ROW-000063",
+    "unit_price": 123.35
+  },
+  {
+    "product_id": "PROD-00064",
+    "product_name": "Synthetic Product 0064",
+    "sku": "SKU-000064",
+    "source_row_id": "PRODUCT-ROW-000064",
+    "unit_price": 163.52
+  },
+  {
+    "product_id": "PROD-00065",
+    "product_name": "Synthetic Product 0065",
+    "sku": "SKU-000065",
+    "source_row_id": "PRODUCT-ROW-000065",
+    "unit_price": 330.32
+  },
+  {
+    "product_id": "PROD-00066",
+    "product_name": "Synthetic Product 0066",
+    "sku": "SKU-000066",
+    "source_row_id": "PRODUCT-ROW-000066",
+    "unit_price": 152.43
+  },
+  {
+    "product_id": "PROD-00067",
+    "product_name": "Synthetic Product 0067",
+    "sku": "SKU-000067",
+    "source_row_id": "PRODUCT-ROW-000067",
+    "unit_price": 20.09
+  },
+  {
+    "product_id": "PROD-00068",
+    "product_name": "Synthetic Product 0068",
+    "sku": "SKU-000068",
+    "source_row_id": "PRODUCT-ROW-000068",
+    "unit_price": 291.49
+  },
+  {
+    "product_id": "PROD-00069",
+    "product_name": "Synthetic Product 0069",
+    "sku": "SKU-000069",
+    "source_row_id": "PRODUCT-ROW-000069",
+    "unit_price": 286.53
+  },
+  {
+    "product_id": "PROD-00070",
+    "product_name": "Synthetic Product 0070",
+    "sku": "SKU-000070",
+    "source_row_id": "PRODUCT-ROW-000070",
+    "unit_price": 68.15
+  },
+  {
+    "product_id": "PROD-00071",
+    "product_name": "Synthetic Product 0071",
+    "sku": "SKU-000071",
+    "source_row_id": "PRODUCT-ROW-000071",
+    "unit_price": 96.43
+  },
+  {
+    "product_id": "PROD-00072",
+    "product_name": "Synthetic Product 0072",
+    "sku": "SKU-000072",
+    "source_row_id": "PRODUCT-ROW-000072",
+    "unit_price": 146.67
+  },
+  {
+    "product_id": "PROD-00073",
+    "product_name": "Synthetic Product 0073",
+    "sku": "SKU-000073",
+    "source_row_id": "PRODUCT-ROW-000073",
+    "unit_price": 56.99
+  },
+  {
+    "product_id": "PROD-00074",
+    "product_name": "Synthetic Product 0074",
+    "sku": "SKU-000074",
+    "source_row_id": "PRODUCT-ROW-000074",
+    "unit_price": 236.23
+  },
+  {
+    "product_id": "PROD-00075",
+    "product_name": "Synthetic Product 0075",
+    "sku": "SKU-000075",
+    "source_row_id": "PRODUCT-ROW-000075",
+    "unit_price": 345.32
+  },
+  {
+    "product_id": "PROD-00076",
+    "product_name": "Synthetic Product 0076",
+    "sku": "SKU-000076",
+    "source_row_id": "PRODUCT-ROW-000076",
+    "unit_price": 311.1
+  },
+  {
+    "product_id": "PROD-00077",
+    "product_name": "Synthetic Product 0077",
+    "sku": "SKU-000077",
+    "source_row_id": "PRODUCT-ROW-000077",
+    "unit_price": 207.56
+  },
+  {
+    "product_id": "PROD-00078",
+    "product_name": "Synthetic Product 0078",
+    "sku": "SKU-000078",
+    "source_row_id": "PRODUCT-ROW-000078",
+    "unit_price": 67.01
+  },
+  {
+    "product_id": "PROD-00079",
+    "product_name": "Synthetic Product 0079",
+    "sku": "SKU-000079",
+    "source_row_id": "PRODUCT-ROW-000079",
+    "unit_price": 270.12
+  },
+  {
+    "product_id": "PROD-00080",
+    "product_name": "Synthetic Product 0080",
+    "sku": "SKU-000080",
+    "source_row_id": "PRODUCT-ROW-000080",
+    "unit_price": 361.39
+  }
+]
