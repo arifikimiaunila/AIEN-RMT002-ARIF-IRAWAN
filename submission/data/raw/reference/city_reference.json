@@ -1,0 +1,42 @@
+[
+  {
+    "city_id": "JKT",
+    "city_name": "Synthetic City JKT",
+    "country": "ID"
+  },
+  {
+    "city_id": "BDG",
+    "city_name": "Synthetic City BDG",
+    "country": "ID"
+  },
+  {
+    "city_id": "SBY",
+    "city_name": "Synthetic City SBY",
+    "country": "ID"
+  },
+  {
+    "city_id": "MDN",
+    "city_name": "Synthetic City MDN",
+    "country": "ID"
+  },
+  {
+    "city_id": "DPS",
+    "city_name": "Synthetic City DPS",
+    "country": "ID"
+  },
+  {
+    "city_id": "MKS",
+    "city_name": "Synthetic City MKS",
+    "country": "ID"
+  },
+  {
+    "city_id": "BPN",
+    "city_name": "Synthetic City BPN",
+    "country": "ID"
+  },
+  {
+    "city_id": "PLM",
+    "city_name": "Synthetic City PLM",
+    "country": "ID"
+  }
+]
