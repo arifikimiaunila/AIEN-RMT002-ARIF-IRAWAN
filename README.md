@@ -31,7 +31,6 @@ submission/
 ## Services
 
 - `postgres:16` - retail-postgres:5432 - retail_analytics
-- `marquez-api:5000` + `marquez-web:3000`
 - `nl2sql-api:8000`
 - `analytics-ui:8501`
 - `airflow:2.9.3` - 8080 - volumes dags, database/schemas, pipelines, raw_data_validation
