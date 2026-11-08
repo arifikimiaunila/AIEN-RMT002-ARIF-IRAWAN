@@ -43,4 +43,16 @@ submission/
 sudo apt install -y python3-venv python3-pip
 4. python3 -m venv venv
 5. source venv/bin/activate
-6. 
+6. pip install -r requirements.txt
+7. sudo docker compose up -d
+8. sudo docker exec -it <nama_container_airflow_webserver> airflow users create \
+    --username admin \
+    --firstname Admin \
+    --lastname User \
+    --role Admin \
+    --email admin@example.com \
+    --password adminpassword
+9. Buka browser dan akses:
+URL: http://localhost:8080
+Username default: admin
+Password default: adminpassword
