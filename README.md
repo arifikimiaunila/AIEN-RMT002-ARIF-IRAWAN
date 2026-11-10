@@ -114,7 +114,7 @@ docker exec -it <nama_container_airflow_webserver> airflow users create \
 --role Admin \
 --email admin@example.com \
 --password adminpassword
-# 10. Buka browser dan akses:
-# URL: http://localhost:8080
-# Username default: admin
-# Password default: adminpassword
+10. Buka browser dan akses:
+URL: http://localhost:8080
+Username default: admin
+Password default: adminpassword
